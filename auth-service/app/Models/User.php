@@ -2,43 +2,51 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    // Champs que l'on peut remplir
     protected $fillable = [
         'name',
         'email',
         'password',
+        'role',       // visiteur | membre | professeur | admin
+        'avatar',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
+    // Champs cachés dans les réponses JSON
     protected $hidden = [
         'password',
-        'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    // Requis par JWT — retourne l'identifiant unique
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    // Requis par JWT — données supplémentaires dans le token
+    public function getJWTCustomClaims()
+    {
+        return [
+            'role' => $this->role,
+            'name' => $this->name,
+        ];
+    }
+
+    // Helpers pour vérifier le rôle
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isProfesseur()
+    {
+        return $this->role === 'professeur';
+    }
 }
