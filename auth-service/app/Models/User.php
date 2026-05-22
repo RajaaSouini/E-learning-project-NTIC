@@ -10,7 +10,6 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
-
     protected $fillable = [
         'name',
         'email',
@@ -18,7 +17,6 @@ class User extends Authenticatable implements JWTSubject
         'role',
         'avatar',
     ];
-
 
     protected $hidden = [
         'password',
@@ -39,12 +37,13 @@ class User extends Authenticatable implements JWTSubject
         ];
     }
 
-    
+    // Vérifie si l'utilisateur est admin
     public function isAdmin()
     {
         return $this->role === 'admin';
     }
 
+    // Vérifie si l'utilisateur est professeur
     public function isProfesseur()
     {
         return $this->role === 'professeur';
