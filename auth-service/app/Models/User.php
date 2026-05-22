@@ -10,27 +10,27 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
-    // Champs que l'on peut remplir
+
     protected $fillable = [
         'name',
         'email',
         'password',
-        'role',       // visiteur | membre | professeur | admin
+        'role',
         'avatar',
     ];
 
-    // Champs cachés dans les réponses JSON
+
     protected $hidden = [
         'password',
     ];
 
-    // Requis par JWT — retourne l'identifiant unique
+    // JWT : retourne l'id de l'utilisateur
     public function getJWTIdentifier()
     {
         return $this->getKey();
     }
 
-    // Requis par JWT — données supplémentaires dans le token
+    // JWT : ajoute le rôle dans le token
     public function getJWTCustomClaims()
     {
         return [
@@ -39,7 +39,7 @@ class User extends Authenticatable implements JWTSubject
         ];
     }
 
-    // Helpers pour vérifier le rôle
+    
     public function isAdmin()
     {
         return $this->role === 'admin';

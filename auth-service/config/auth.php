@@ -13,10 +13,7 @@ return [
     |
     */
 
-    'defaults' => [
-        'guard' => 'web',
-        'passwords' => 'users',
-    ],
+    
 
     /*
     |--------------------------------------------------------------------------
@@ -35,12 +32,17 @@ return [
     |
     */
 
-    'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
+    'defaults' => [
+    'guard'     => 'api',   // ← change 'web' en 'api'
+    'passwords' => 'users',
+],
+
+'guards' => [
+    'api' => [
+        'driver'   => 'jwt',    // ← 'token' devient 'jwt'
+        'provider' => 'users',
     ],
+],
 
     /*
     |--------------------------------------------------------------------------
