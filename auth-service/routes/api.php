@@ -20,3 +20,8 @@ Route::prefix('auth')->middleware('jwt')->group(function () {
     Route::post('logout',           [AuthController::class, 'logout']);
     Route::post('change-role/{id}', [AuthController::class, 'changeRole']);
 });
+
+// Route pour lister tous les users (admin)
+Route::get('users', function() {
+    return response()->json(\App\Models\User::all());
+})->middleware('jwt');

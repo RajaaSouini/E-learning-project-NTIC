@@ -1,19 +1,14 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\VideoController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+Route::options('{any}', function() {
+    return response()->json([], 200);
+})->where('any', '.*');
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('videos',                [VideoController::class, 'index']);
+Route::get('videos/{id}',           [VideoController::class, 'show']);
+Route::post('videos/upload',        [VideoController::class, 'upload']);
+Route::delete('videos/{id}',        [VideoController::class, 'destroy']);
+Route::get('videos/{id}/download',  [VideoController::class, 'download']);
