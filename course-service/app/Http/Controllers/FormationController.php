@@ -4,26 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Models\Formation;
 use App\Models\Chapter;
+use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class FormationController extends Controller
 {
-    // ─── LISTE TOUTES LES FORMATIONS ─────────────
+    // Liste toutes les formations avec chapitres et cours
     public function index()
     {
-        $formations = Formation::with('chapters')->get();
+        $formations = Formation::with(['chapters.courses'])->get();
         return response()->json($formations);
     }
 
-    // ─── DÉTAIL D'UNE FORMATION ──────────────────
+    // Détail d'une formation
     public function show($id)
     {
-        $formation = Formation::with('chapters')->findOrFail($id);
+        $formation = Formation::with(['chapters.courses'])->findOrFail($id);
         return response()->json($formation);
     }
 
-    // ─── CRÉER UNE FORMATION ─────────────────────
+    // Créer une formation
     public function store(Request $request)
     {
         $request->validate([
@@ -46,29 +47,17 @@ class FormationController extends Controller
         ], 201);
     }
 
-    // ─── MODIFIER UNE FORMATION ──────────────────
-    public function update(Request $request, $id)
-    {
-        $formation = Formation::findOrFail($id);
-        $formation->update($request->all());
-
-        return response()->json([
-            'message'   => 'Formation mise à jour',
-            'formation' => $formation,
-        ]);
-    }
-
-    // ─── AJOUTER UN CHAPITRE ─────────────────────
+    // Ajouter un chapitre à une formation
     public function addChapter(Request $request, $id)
     {
         $request->validate([
             'title' => 'required|string',
-            'order' => 'required|integer',
+            'order' => 'nullable|integer',
         ]);
 
         $chapter = Chapter::create([
             'title'        => $request->title,
-            'order'        => $request->order,
+            'order'        => $request->order ?? 1,
             'formation_id' => $id,
         ]);
 
@@ -78,14 +67,44 @@ class FormationController extends Controller
         ], 201);
     }
 
-    // ─── SUPPRIMER UNE FORMATION ─────────────────
+    // Ajouter un cours à un chapitre
+    public function addCourseToChapter(Request $request, $formationId, $chapterId)
+    {
+        $request->validate([
+            'title'        => 'required|string',
+            'description'  => 'nullable|string',
+            'technology'   => 'required|string',
+            'level'        => 'required|in:debutant,intermediaire,avance',
+            'duration'     => 'nullable|integer',
+            'video_url'    => 'nullable|string',
+            'professor_id' => 'required|integer',
+        ]);
+
+        $course = Course::create([
+            'title'        => $request->title,
+            'description'  => $request->description,
+            'slug'         => Str::slug($request->title) . '-' . uniqid(),
+            'technology'   => $request->technology,
+            'level'        => $request->level,
+            'duration'     => $request->duration ?? 0,
+            'video_url'    => $request->video_url,
+            'professor_id' => $request->professor_id,
+            'chapter_id'   => $chapterId,
+            'status'       => 'publie',
+        ]);
+
+        return response()->json([
+            'message' => 'Cours ajouté au chapitre',
+            'course'  => $course,
+        ], 201);
+    }
+
+    // Supprimer une formation
     public function destroy($id)
     {
         $formation = Formation::findOrFail($id);
         $formation->delete();
 
-        return response()->json([
-            'message' => 'Formation supprimée'
-        ]);
+        return response()->json(['message' => 'Formation supprimée']);
     }
 }

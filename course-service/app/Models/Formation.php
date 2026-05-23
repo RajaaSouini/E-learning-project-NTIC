@@ -18,6 +18,12 @@ class Formation extends Model
     // Une formation a plusieurs chapitres
     public function chapters()
     {
-        return $this->hasMany(Chapter::class);
+        return $this->hasMany(Chapter::class)->orderBy('order');
+    }
+
+    // Une formation a plusieurs cours via les chapitres
+    public function courses()
+    {
+        return $this->hasManyThrough(Course::class, Chapter::class);
     }
 }

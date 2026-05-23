@@ -21,6 +21,6 @@ class Chapter extends Model
     // Un chapitre a plusieurs cours
     public function courses()
     {
-        return $this->hasMany(Course::class);
+        return $this->hasMany(Course::class)->orderBy('id');
     }
 }

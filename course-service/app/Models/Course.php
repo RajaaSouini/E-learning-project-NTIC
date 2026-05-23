@@ -7,17 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class Course extends Model
 {
     protected $fillable = [
-    'title',
-    'description',
-    'slug',
-    'technology',
-    'level',
-    'duration',
-    'video_url',
-    'thumbnail',
-    'professor_id',
-    'status',      
-];
+        'title',
+        'description',
+        'slug',
+        'technology',
+        'level',
+        'duration',
+        'video_url',
+        'thumbnail',
+        'professor_id',
+        'chapter_id',
+        'status',
+    ];
 
     // Un cours appartient à un chapitre
     public function chapter()
