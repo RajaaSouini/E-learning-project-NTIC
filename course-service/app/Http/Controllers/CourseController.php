@@ -17,10 +17,10 @@ class CourseController extends Controller
 
     // ─── DÉTAIL D'UN COURS ───────────────────────
     public function show($id)
-    {
-        $course = Course::findOrFail($id);
-        return response()->json($course);
-    }
+{
+    $course = Course::with('chapter.formation')->findOrFail($id);
+    return response()->json($course);
+}
 
     // ─── CRÉER UN COURS (professeur/admin) ───────
     public function store(Request $request)

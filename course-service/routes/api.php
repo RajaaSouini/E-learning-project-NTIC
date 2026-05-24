@@ -28,3 +28,10 @@ Route::get('cursus/{id}',    [CursusController::class, 'show']);
 Route::post('cursus',        [CursusController::class, 'store']);
 Route::put('cursus/{id}',    [CursusController::class, 'update']);
 Route::delete('cursus/{id}', [CursusController::class, 'destroy']);
+
+// ─── PROGRESSION ─────────────────────────────────
+Route::post('progression/watch',                      [\App\Http\Controllers\ProgressionController::class, 'markAsWatched']);
+Route::get('progression/user/{userId}',               [\App\Http\Controllers\ProgressionController::class, 'getUserProgress']);
+Route::get('progression/user/{userId}/formation/{formationId}', [\App\Http\Controllers\ProgressionController::class, 'getFormationProgress']);
+Route::get('progression/stats/course/{courseId}',     [\App\Http\Controllers\ProgressionController::class, 'getCourseStats']);
+Route::get('progression/stats/formation/{formationId}', [\App\Http\Controllers\ProgressionController::class, 'getFormationStats']);

@@ -12,13 +12,13 @@ class Chapter extends Model
         'formation_id',
     ];
 
-    // Un chapitre appartient à une formation
+    
     public function formation()
     {
         return $this->belongsTo(Formation::class);
     }
 
-    // Un chapitre a plusieurs cours
+
     public function courses()
     {
         return $this->hasMany(Course::class)->orderBy('id');
