@@ -35,3 +35,6 @@ Route::get('progression/user/{userId}',               [\App\Http\Controllers\Pro
 Route::get('progression/user/{userId}/formation/{formationId}', [\App\Http\Controllers\ProgressionController::class, 'getFormationProgress']);
 Route::get('progression/stats/course/{courseId}',     [\App\Http\Controllers\ProgressionController::class, 'getCourseStats']);
 Route::get('progression/stats/formation/{formationId}', [\App\Http\Controllers\ProgressionController::class, 'getFormationStats']);
+
+// ─── RECHERCHE ───────────────────────────────────
+Route::get('search', [\App\Http\Controllers\SearchController::class, 'search']);
