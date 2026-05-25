@@ -14,10 +14,11 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->enum('role', [
-                'membre',
-                'professeur',
-                'admin'
-            ])->default('membre');
+    'membre',
+    'premium',      // ← ajoute premium
+    'professeur',
+    'admin',
+])->default('membre');
             $table->string('avatar')->nullable();
             $table->timestamps();
         });

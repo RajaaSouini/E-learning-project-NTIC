@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AbonnementController;
 
 // Réponse aux requêtes OPTIONS (preflight CORS)
 Route::options('{any}', function() {
@@ -25,3 +26,10 @@ Route::prefix('auth')->middleware('jwt')->group(function () {
 Route::get('users', function() {
     return response()->json(\App\Models\User::all());
 })->middleware('jwt');
+
+
+// ─── ABONNEMENTS ─────────────────────────────────
+Route::post('abonnements/souscrire',    [AbonnementController::class, 'souscrire']);
+Route::get('abonnements/statut/{userId}', [AbonnementController::class, 'statut']);
+Route::post('abonnements/annuler/{userId}', [AbonnementController::class, 'annuler']);
+Route::get('abonnements',               [AbonnementController::class, 'index']);
