@@ -103,4 +103,18 @@ class CourseController extends Controller
 
         return response()->json($query->get());
     }
+    // ─── Changer le statut premium d'un cours ────────
+public function togglePremium($id)
+{
+    $course = Course::findOrFail($id);
+    $course->update([
+        'is_premium' => !$course->is_premium
+    ]);
+
+    return response()->json([
+        'message'    => $course->is_premium ? 'Cours marqué Premium' : 'Cours marqué Gratuit',
+        'is_premium' => $course->is_premium,
+        'course'     => $course,
+    ]);
+}
 }

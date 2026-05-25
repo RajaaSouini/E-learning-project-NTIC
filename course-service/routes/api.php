@@ -38,3 +38,5 @@ Route::get('progression/stats/formation/{formationId}', [\App\Http\Controllers\P
 
 // ─── RECHERCHE ───────────────────────────────────
 Route::get('search', [\App\Http\Controllers\SearchController::class, 'search']);
+Route::post('courses/{id}/toggle-premium', [CourseController::class, 'togglePremium']);
+Route::post('formations/{id}/toggle-premium', [FormationController::class, 'togglePremium']);

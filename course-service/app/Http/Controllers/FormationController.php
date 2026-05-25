@@ -107,4 +107,17 @@ class FormationController extends Controller
 
         return response()->json(['message' => 'Formation supprimée']);
     }
+    // ─── Changer le statut premium d'une formation ───
+public function togglePremium($id)
+{
+    $formation = Formation::findOrFail($id);
+    $formation->update([
+        'is_premium' => !$formation->is_premium
+    ]);
+
+    return response()->json([
+        'message'    => $formation->is_premium ? 'Formation marquée Premium' : 'Formation marquée Gratuite',
+        'is_premium' => $formation->is_premium,
+    ]);
+}
 }
